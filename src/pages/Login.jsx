@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Login = () => {
   return (
     <>
-      <h1 className="bg-clip-text text-transparent bg-gradient-to-r from-gray-600 via-gray-800 to-black font-black text-6xl capitalize p-4">
+      <h1 className="text-black font-black text-6xl capitalize p-4">
         Log in and manage your{" "}
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-600">
           projects
@@ -44,20 +44,23 @@ const Login = () => {
         <input
           type="submit"
           value="Log in"
-          className="bg-gradient-to-r from-gray-600 via-gray-700 to-black shadow w-full py-3 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:from-indigo-500 hover:via-fuchsia-500 hover:to-pink-600 my-3"
+          className="bg-black hover:bg-gradient-to-r shadow w-full py-3 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:from-indigo-500 hover:via-fuchsia-500 hover:to-pink-600 my-3"
         />
 
         <nav className="lg:flex lg:justify-between">
-          <Link
-            to="register"
-            className="block text-center my-5 text-slate-500 hover:underline hover:text-purple-600"
-          >
-            Create account
-          </Link>
+          <div className="block text-center my-5">
+            <p className="inline text-slate-500">Don't have an account? </p>
 
+            <Link
+              to="/register"
+              className="text-center my-5 text-fuchsia-600 font-semibold hover:underline"
+            >
+              Sign up
+            </Link>
+          </div>
           <Link
-            to="forgot-password"
-            className="block text-center my-5 text-slate-500 hover:underline hover:text-pink-600"
+            to="/forgot-password"
+            className="block text-center my-5 text-slate-500 font-medium hover:underline hover:text-pink-600"
           >
             Forgot password?
           </Link>
