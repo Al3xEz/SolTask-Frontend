@@ -1,17 +1,54 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import Alert from "../components/Alert";
+import axios from "axios";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
+  const [alert, setAlert] = useState({});
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if ([name, email, password, repeatedPassword].includes("")) {
-      
+      setAlert({ message: "All fields are required", error: true });
+      return;
+    }
+
+    if (password !== repeatedPassword) {
+      setAlert({ message: "Passwords are diferents", error: true });
+      return;
+    }
+
+    if (password.length < 8) {
+      setAlert({
+        message: "Your password must be at least 6 characters long.",
+        error: true,
+      });
+      return;
+    }
+
+    setAlert({});
+
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users`,
+        {
+          name,
+          email,
+          password,
+        }
+      );
+      setAlert({ message: data.message, error: false });
+      setName("");
+      setEmail("");
+      setPassword("");
+      setRepeatedPassword("");
+    } catch (error) {
+      setAlert({ message: error.response.data.message, error: true });
     }
   };
 
@@ -24,10 +61,11 @@ const Register = () => {
         </span>
       </h1>
 
+      {Object.keys(alert).length > 0 && <Alert alert={alert} />}
+
       <form
-        action=""
         onSubmit={handleSubmit}
-        className="my-10 bg-white shadow rounded-xl px-10 py-5"
+        className="my-5 bg-white shadow rounded-xl px-10 py-5"
       >
         <div className="my-5">
           <label

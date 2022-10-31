@@ -10,7 +10,7 @@ const Login = () => {
         </span>
       </h1>
 
-      <form action="" className="my-10 bg-white shadow rounded-xl px-10 py-5">
+      <form action="" className="my-5 bg-white shadow rounded-xl px-10 py-5">
         <div className="my-5">
           <label
             htmlFor="email"
