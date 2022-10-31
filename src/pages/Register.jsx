@@ -94,6 +94,7 @@ const Register = () => {
           state={email}
           setState={setEmail}
         />
+
         {/*-----Password-----*/}
         <FormInput
           label="Password"

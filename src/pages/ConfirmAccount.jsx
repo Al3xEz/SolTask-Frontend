@@ -5,6 +5,7 @@ import Alert from "../components/Alert";
 import Title from "../components/Title";
 
 const ConfirmAccount = () => {
+  //----------States----------
   const params = useParams();
   const { token } = params;
   const [alert, setAlert] = useState({});
@@ -22,6 +23,11 @@ const ConfirmAccount = () => {
     confirmAccount();
   }, []);
 
+  {
+    /*-----------------------------------------------------------------------
+     ------------------------------ Component -------------------------------
+     -----------------------------------------------------------------------*/
+  }
   return (
     <>
       <Title title="Confirm your" superWord="account" />
@@ -29,7 +35,8 @@ const ConfirmAccount = () => {
         {/* ----------Alert----------*/}
         {Object.keys(alert).length > 0 && <Alert alert={alert} />}
 
-        <div className="block text-center mt-10 mb-5">
+        {/* ----------Nav----------*/}
+        <nav className="block text-center mt-10 mb-5">
           <Link
             to="/"
             className="my-5 font-bold text-xl hover:underline hover:bg-clip-text hover:text-transparent 
@@ -37,7 +44,7 @@ const ConfirmAccount = () => {
           >
             Log in
           </Link>
-        </div>
+        </nav>
       </div>
     </>
   );

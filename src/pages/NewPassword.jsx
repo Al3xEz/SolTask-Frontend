@@ -59,8 +59,14 @@ const NewPassword = () => {
     }
   };
 
+  {
+    /*-----------------------------------------------------------------------
+     ------------------------------ Component -------------------------------
+     -----------------------------------------------------------------------*/
+  }
   return (
     <>
+      {/* ----------Title----------*/}
       <Title title="Reset your" superWord="password" />
 
       {/*----------Alert----------*/}
@@ -99,7 +105,7 @@ const NewPassword = () => {
       )}
 
       {modifiedPassword && (
-        <div className="block text-center mt-10 mb-5">
+        <nav className="block text-center mt-10 mb-5">
           <Link
             to="/"
             className=" my-5 font-bold text-xl hover:underline hover:bg-clip-text hover:text-transparent 
@@ -107,7 +113,7 @@ const NewPassword = () => {
           >
             Log in
           </Link>
-        </div>
+        </nav>
       )}
     </>
   );

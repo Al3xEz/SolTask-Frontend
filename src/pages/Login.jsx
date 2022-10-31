@@ -1,8 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import FormInput from "../components/FormInput";
+import SubmitButton from "../components/SubmitButton";
+import Title from "../components/Title";
+import Alert from "../components/Alert";
+import axiosClient from "../config/axiosClient";
 
 const Login = () => {
+  //----------States----------
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  {
+    /*-----------------------------------------------------------------------
+     ------------------------------ Component -------------------------------
+     -----------------------------------------------------------------------*/
+  }
   return (
     <>
+      {/*----------Title----------*/}
       <h1 className="text-black font-black text-6xl capitalize p-4">
         Log in and manage your{" "}
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-600">
@@ -10,43 +26,34 @@ const Login = () => {
         </span>
       </h1>
 
+      {/*----------Form----------*/}
       <form action="" className="my-5 bg-white shadow rounded-xl px-10 py-5">
-        <div className="my-5">
-          <label
-            htmlFor="email"
-            className="text-gray-600 block text-xl font-bold w-min"
-          >
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            placeholder="Email"
-            className="w-full mt-3 p-3 border rounded-lg shadow-inner bg-gray-50"
-          />
-        </div>
-
-        <div className="my-5">
-          <label
-            htmlFor="password"
-            className="text-gray-600 block text-xl font-bold w-min"
-          >
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            placeholder="Password"
-            className="w-full mt-3 p-3 border rounded-lg shadow-inner bg-gray-50"
-          />
-        </div>
-
-        <input
-          type="submit"
-          value="Log in"
-          className="bg-black hover:bg-gradient-to-r shadow w-full py-3 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:from-indigo-500 hover:via-fuchsia-500 hover:to-pink-600 my-3"
+        {/*-----Email-----*/}
+        <FormInput
+          label="Email"
+          id="email"
+          type="email"
+          placeholder="Email"
+          autoComplete="email"
+          state={email}
+          setState={setEmail}
         />
 
+        {/*-----Password-----*/}
+        <FormInput
+          label="Password"
+          id="password"
+          type="password"
+          placeholder="Password"
+          autoComplete="new-password"
+          state={password}
+          setState={setPassword}
+        />
+
+        {/*-----Submit-----*/}
+        <SubmitButton value="Log in" />
+
+        {/*-----Nav-----*/}
         <nav className="lg:flex lg:justify-between">
           <div className="block text-center my-5">
             <p className="inline text-slate-500">Don't have an account? </p>
