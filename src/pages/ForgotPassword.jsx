@@ -29,6 +29,7 @@ const ForgotPassword = () => {
         `${import.meta.env.VITE_BACKEND_URL}/api/users/forgot-password`,
         { email }
       );
+      setEmail("");
       setAlert({ message: data.message, error: false });
     } catch (error) {
       setAlert({ message: error.response.data.message, error: true });

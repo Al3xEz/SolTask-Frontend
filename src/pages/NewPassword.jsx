@@ -1,50 +1,120 @@
+import { Link, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import FormInput from "../components/FormInput";
+import SubmitButton from "../components/SubmitButton";
+import Title from "../components/Title";
+import Alert from "../components/Alert";
+import axios from "axios";
+
 const NewPassword = () => {
+  const [validToken, setValidToken] = useState(false);
+  const [password, setPassword] = useState("");
+  const [repeatedPassword, setRepeatedPassword] = useState("");
+  const [alert, setAlert] = useState({});
+  const [modifiedPassword, setModifiedPassword] = useState(false);
+
+  const { token } = useParams();
+
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        await axios(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/users/forgot-password/${token}`
+        );
+        setValidToken(true);
+      } catch (error) {
+        setAlert({ message: error.response.data.message, error: true });
+        setValidToken(false);
+      }
+    };
+    checkToken();
+  }, []);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (password !== repeatedPassword) {
+      setAlert({ message: "The passwords are diferents", error: true });
+      return;
+    }
+
+    if (password.length < 6) {
+      setAlert({
+        message: "Your password must be at least 6 characters long.",
+        error: true,
+      });
+      return;
+    }
+
+    try {
+      const url = `${
+        import.meta.env.VITE_BACKEND_URL
+      }/api/users/forgot-password/${token}`;
+
+      const { data } = await axios.post(url, { password });
+
+      setAlert({ message: data.message, error: false });
+      setPassword("");
+      setRepeatedPassword("");
+      setValidToken(false);
+      setModifiedPassword(true);
+    } catch (error) {
+      setAlert({ message: error.response.data.message, error: true });
+    }
+  };
+
   return (
     <>
-      <h1 className="text-black font-black text-6xl capitalize p-4">
-        Reset your{" "}
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-600">
-          password
-        </span>
-      </h1>
+      <Title title="Reset your" superWord="password" />
 
-      <form action="" className="my-5 bg-white shadow rounded-xl px-10 py-5">
-        <div className="my-5">
-          <label
-            htmlFor="password"
-            className="text-gray-600 block text-xl font-bold w-max capitalize"
-          >
-            New password
-          </label>
-          <input
+      {/*----------Alert----------*/}
+      {Object.keys(alert).length > 0 && <Alert alert={alert} />}
+
+      {validToken && (
+        <form
+          onSubmit={handleSubmit}
+          className="my-5 pb-6 bg-white shadow rounded-xl px-10 py-5"
+        >
+          {/*-----Password-----*/}
+          <FormInput
+            label="Password"
             id="password"
             type="password"
-            placeholder="New password"
-            className="w-full mt-3 p-3 border rounded-lg shadow-inner bg-gray-50"
+            placeholder="Password"
+            autoComplete="new-password"
+            state={password}
+            setState={setPassword}
           />
-        </div>
 
-        <div className="my-5">
-          <label
-            htmlFor="password2"
-            className="text-gray-600 block text-xl font-bold w-max capitalize"
-          >
-            Repeat password
-          </label>
-          <input
+          {/*-----Repeat Password-----*/}
+          <FormInput
+            label="Repeat password"
             id="password2"
             type="password"
             placeholder="Repeat password"
-            className="w-full mt-3 p-3 border rounded-lg shadow-inner bg-gray-50"
+            autoComplete="new-password"
+            state={repeatedPassword}
+            setState={setRepeatedPassword}
           />
-        </div>
 
-        <input
-          type="submit"
-          value="Reset password"
-          className="bg-black hover:bg-gradient-to-r w-full py-3 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:from-indigo-500 hover:via-fuchsia-500 hover:to-pink-600 my-3"
-        />
-      </form>
+          {/*-----Submit-----*/}
+          <SubmitButton value="Reset Password" />
+        </form>
+      )}
+
+      {modifiedPassword && (
+        <div className="block text-center mt-10 mb-5">
+          <Link
+            to="/"
+            className=" my-5 font-bold text-xl hover:underline hover:bg-clip-text hover:text-transparent 
+              hover:bg-gradient-to-r hover:from-indigo-500 hover:via-fuchsia-500 hover:to-pink-600"
+          >
+            Log in
+          </Link>
+        </div>
+      )}
     </>
   );
 };
