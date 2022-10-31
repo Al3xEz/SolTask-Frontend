@@ -4,7 +4,7 @@ import FormInput from "../components/FormInput";
 import SubmitButton from "../components/SubmitButton";
 import Title from "../components/Title";
 import Alert from "../components/Alert";
-import axios from "axios";
+import axiosClient from "../config/axiosClient";
 
 const Register = () => {
   //----------States----------
@@ -39,14 +39,11 @@ const Register = () => {
     setAlert({});
 
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/users`,
-        {
-          name,
-          email,
-          password,
-        }
-      );
+      const { data } = await axiosClient.post("/users", {
+        name,
+        email,
+        password,
+      });
       setAlert({ message: data.message, error: false });
       setName("");
       setEmail("");

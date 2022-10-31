@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axiosClient from "../config/axiosClient";
 import Title from "../components/Title";
 import FormInput from "../components/FormInput";
 import SubmitButton from "../components/SubmitButton";
@@ -25,10 +25,9 @@ const ForgotPassword = () => {
     }
 
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/users/forgot-password`,
-        { email }
-      );
+      const { data } = await axiosClient.post("/users/forgot-password", {
+        email,
+      });
       setEmail("");
       setAlert({ message: data.message, error: false });
     } catch (error) {

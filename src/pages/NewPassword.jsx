@@ -4,7 +4,7 @@ import FormInput from "../components/FormInput";
 import SubmitButton from "../components/SubmitButton";
 import Title from "../components/Title";
 import Alert from "../components/Alert";
-import axios from "axios";
+import axiosClient from "../config/axiosClient";
 
 const NewPassword = () => {
   const [validToken, setValidToken] = useState(false);
@@ -18,11 +18,7 @@ const NewPassword = () => {
   useEffect(() => {
     const checkToken = async () => {
       try {
-        await axios(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/api/users/forgot-password/${token}`
-        );
+        await axiosClient(`/users/forgot-password/${token}`);
         setValidToken(true);
       } catch (error) {
         setAlert({ message: error.response.data.message, error: true });
@@ -49,11 +45,9 @@ const NewPassword = () => {
     }
 
     try {
-      const url = `${
-        import.meta.env.VITE_BACKEND_URL
-      }/api/users/forgot-password/${token}`;
+      const url = `/users/forgot-password/${token}`;
 
-      const { data } = await axios.post(url, { password });
+      const { data } = await axiosClient.post(url, { password });
 
       setAlert({ message: data.message, error: false });
       setPassword("");
