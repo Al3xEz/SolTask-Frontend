@@ -1,37 +1,67 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import Title from "../components/Title";
+import FormInput from "../components/FormInput";
+import SubmitButton from "../components/SubmitButton";
+import Alert from "../components/Alert";
 
 const ForgotPassword = () => {
+  //----------States----------
+  const [email, setEmail] = useState("");
+  const [alert, setAlert] = useState({});
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (email === "") {
+      setAlert({ message: "The email is required", error: true });
+      return;
+    }
+
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      setAlert({ message: "This isn't a valid email", error: true });
+      return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/forgot-password`,
+        { email }
+      );
+      setAlert({ message: data.message, error: false });
+    } catch (error) {
+      setAlert({ message: error.response.data.message, error: true });
+    }
+  };
+
   return (
     <>
-      <h1 className="text-black font-black text-6xl capitalize p-4">
-        Forgot your{" "}
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-600">
-          password?
-        </span>
-      </h1>
+      {/*----------Title----------*/}
+      <Title title="Forgot your" superWord="password?" />
 
-      <form action="" className="my-5 bg-white shadow rounded-xl px-10 py-5">
-        <div className="my-5">
-          <label
-            htmlFor="email"
-            className="text-gray-600 block text-xl font-bold w-max"
-          >
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            placeholder="Email"
-            className="w-full mt-3 p-3 border rounded-lg shadow-inner bg-gray-50"
-          />
-        </div>
+      {/*----------Alert----------*/}
+      {Object.keys(alert).length > 0 && <Alert alert={alert} />}
 
-        <input
-          type="submit"
-          value="Search account"
-          className="bg-black hover:bg-gradient-to-r w-full py-3 rounded-xl text-white uppercase font-bold hover:cursor-pointer hover:from-indigo-500 hover:via-fuchsia-500 hover:to-pink-600 my-3"
+      <form
+        onSubmit={handleSubmit}
+        className="my-5 bg-white shadow rounded-xl px-10 py-5"
+      >
+        {/*-----Email-----*/}
+        <FormInput
+          label="Email"
+          id="email"
+          type="email"
+          placeholder="Email"
+          autoComplete="email"
+          state={email}
+          setState={setEmail}
         />
 
+        {/*-----Submit-----*/}
+        <SubmitButton value="Search account" />
+
+        {/*-----Nav-----*/}
         <nav className="lg:flex lg:justify-between my-5">
           <div className="block text-center">
             <p className="inline text-slate-500">Already have an account? </p>

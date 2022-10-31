@@ -65,18 +65,18 @@ const Register = () => {
 
   return (
     <>
-      {/* ----------Title----------*/}
+      {/*----------Title----------*/}
       <Title title="Sign up and manage your" superWord="projects" />
 
-      {/* ----------Alert----------*/}
+      {/*----------Alert----------*/}
       {Object.keys(alert).length > 0 && <Alert alert={alert} />}
 
-      {/* ----------Form----------*/}
+      {/*----------Form----------*/}
       <form
         onSubmit={handleSubmit}
         className="my-5 bg-white shadow rounded-xl px-10 py-5"
       >
-        {/* -----Name-----*/}
+        {/*-----Name-----*/}
         <FormInput
           label="Name"
           id="name"
@@ -87,7 +87,7 @@ const Register = () => {
           setState={setName}
         />
 
-        {/* -----Email-----*/}
+        {/*-----Email-----*/}
         <FormInput
           label="Email"
           id="email"
@@ -97,7 +97,7 @@ const Register = () => {
           state={email}
           setState={setEmail}
         />
-        {/* -----Password-----*/}
+        {/*-----Password-----*/}
         <FormInput
           label="Password"
           id="password"
@@ -108,7 +108,7 @@ const Register = () => {
           setState={setPassword}
         />
 
-        {/* -----Repeat Password-----*/}
+        {/*-----Repeat Password-----*/}
         <FormInput
           label="Repeat password"
           id="password2"
@@ -119,10 +119,10 @@ const Register = () => {
           setState={setRepeatedPassword}
         />
 
-        {/* -----Submit-----*/}
+        {/*-----Submit-----*/}
         <SubmitButton value="Create account" />
 
-        {/* -----Nav-----*/}
+        {/*-----Nav-----*/}
         <nav className="lg:flex lg:justify-center">
           <div className="block text-center my-5">
             <p className="inline text-slate-500">Already have an account? </p>
