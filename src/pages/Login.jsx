@@ -10,6 +10,26 @@ const Login = () => {
   //----------States----------
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState({});
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if ([email, password].includes("")) {
+      setAlert({ message: "All fields are required", error: true });
+      return;
+    }
+    try {
+      const { data } = await axiosClient.post("/users/login", {
+        email,
+        password,
+      });
+      setAlert({});
+      localStorage.setItem("token", data.JWT);
+    } catch (error) {
+      setAlert({ message: error.response.data.message, error: true });
+    }
+  };
 
   {
     /*-----------------------------------------------------------------------
@@ -26,8 +46,14 @@ const Login = () => {
         </span>
       </h1>
 
+      {/*----------Alert----------*/}
+      {Object.keys(alert).length > 0 && <Alert alert={alert} />}
+
       {/*----------Form----------*/}
-      <form action="" className="my-5 bg-white shadow rounded-xl px-10 py-5">
+      <form
+        onSubmit={handleSubmit}
+        className="my-5 bg-white shadow rounded-xl px-10 py-5"
+      >
         {/*-----Email-----*/}
         <FormInput
           label="Email"
@@ -65,6 +91,7 @@ const Login = () => {
               Sign up
             </Link>
           </div>
+
           <Link
             to="/forgot-password"
             className="block text-center my-5 text-slate-500 font-medium hover:underline hover:text-pink-600"

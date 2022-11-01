@@ -69,9 +69,6 @@ const NewPassword = () => {
       {/* ----------Title----------*/}
       <Title title="Reset your" superWord="password" />
 
-      {/*----------Alert----------*/}
-      {Object.keys(alert).length > 0 && <Alert alert={alert} />}
-
       {validToken && (
         <form
           onSubmit={handleSubmit}
@@ -104,16 +101,22 @@ const NewPassword = () => {
         </form>
       )}
 
-      {modifiedPassword && (
-        <nav className="block text-center mt-10 mb-5">
-          <Link
-            to="/"
-            className=" my-5 font-bold text-xl hover:underline hover:bg-clip-text hover:text-transparent 
+      {!validToken && (
+        <div className="my-10 shadow-lg px-5 py-3 rounded-xl bg-white">
+          {/*----------Alert----------*/}
+          {Object.keys(alert).length > 0 && <Alert alert={alert} />}
+          {modifiedPassword && (
+            <nav className="block text-center mt-10 mb-5">
+              <Link
+                to="/"
+                className=" my-5 font-bold text-xl hover:underline hover:bg-clip-text hover:text-transparent 
               hover:bg-gradient-to-r hover:from-indigo-500 hover:via-fuchsia-500 hover:to-pink-600"
-          >
-            Log in
-          </Link>
-        </nav>
+              >
+                Log in
+              </Link>
+            </nav>
+          )}
+        </div>
       )}
     </>
   );
