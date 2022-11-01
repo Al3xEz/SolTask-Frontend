@@ -7,6 +7,7 @@ import Alert from "../components/Alert";
 import axiosClient from "../config/axiosClient";
 
 const NewPassword = () => {
+  //----------States----------
   const [validToken, setValidToken] = useState(false);
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
@@ -15,6 +16,7 @@ const NewPassword = () => {
 
   const { token } = useParams();
 
+  //----------UseEffect----------
   useEffect(() => {
     const checkToken = async () => {
       try {
@@ -28,6 +30,7 @@ const NewPassword = () => {
     checkToken();
   }, []);
 
+  //----------Handle Submit----------
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -59,46 +62,47 @@ const NewPassword = () => {
     }
   };
 
-  {
-    /*-----------------------------------------------------------------------
-     ------------------------------ Component -------------------------------
-     -----------------------------------------------------------------------*/
-  }
+  /*----------------------------------------------------------------------
+    ------------------------------ Component -----------------------------
+    ----------------------------------------------------------------------*/
   return (
     <>
       {/* ----------Title----------*/}
       <Title title="Reset your" superWord="password" />
 
       {validToken && (
-        <form
-          onSubmit={handleSubmit}
-          className="my-5 pb-6 bg-white shadow rounded-xl px-10 py-5"
-        >
-          {/*-----Password-----*/}
-          <FormInput
-            label="Password"
-            id="password"
-            type="password"
-            placeholder="Password"
-            autoComplete="new-password"
-            state={password}
-            setState={setPassword}
-          />
+        <div>
+          {Object.keys(alert).length > 0 && <Alert alert={alert} />}
+          <form
+            onSubmit={handleSubmit}
+            className="my-5 pb-6 bg-white shadow rounded-xl px-10 py-5"
+          >
+            {/*-----Password-----*/}
+            <FormInput
+              label="Password"
+              id="password"
+              type="password"
+              placeholder="Password"
+              autoComplete="new-password"
+              state={password}
+              setState={setPassword}
+            />
 
-          {/*-----Repeat Password-----*/}
-          <FormInput
-            label="Repeat password"
-            id="password2"
-            type="password"
-            placeholder="Repeat password"
-            autoComplete="new-password"
-            state={repeatedPassword}
-            setState={setRepeatedPassword}
-          />
+            {/*-----Repeat Password-----*/}
+            <FormInput
+              label="Repeat password"
+              id="password2"
+              type="password"
+              placeholder="Repeat password"
+              autoComplete="new-password"
+              state={repeatedPassword}
+              setState={setRepeatedPassword}
+            />
 
-          {/*-----Submit-----*/}
-          <SubmitButton value="Reset Password" />
-        </form>
+            {/*-----Submit-----*/}
+            <SubmitButton value="Reset Password" />
+          </form>
+        </div>
       )}
 
       {!validToken && (

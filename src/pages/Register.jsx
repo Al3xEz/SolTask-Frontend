@@ -14,12 +14,17 @@ const Register = () => {
   const [repeatedPassword, setRepeatedPassword] = useState("");
   const [alert, setAlert] = useState({});
 
-  //----------Functions----------
+  //----------Handle Submit----------
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if ([name, email, password, repeatedPassword].includes("")) {
       setAlert({ message: "All fields are required", error: true });
+      return;
+    }
+
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      setAlert({ message: "This isn't a valid email", error: true });
       return;
     }
 
@@ -54,12 +59,9 @@ const Register = () => {
     }
   };
 
-  {
-    /*-----------------------------------------------------------------------
-     ------------------------------ Component -------------------------------
-     -----------------------------------------------------------------------*/
-  }
-
+  /*----------------------------------------------------------------------
+    ------------------------------ Component -----------------------------
+    ----------------------------------------------------------------------*/
   return (
     <>
       {/*----------Title----------*/}

@@ -11,6 +11,7 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [alert, setAlert] = useState({});
 
+  //----------Handle Submit----------
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -35,6 +36,9 @@ const ForgotPassword = () => {
     }
   };
 
+  /*----------------------------------------------------------------------
+    ------------------------------ Component -----------------------------
+    ----------------------------------------------------------------------*/
   return (
     <>
       {/*----------Title----------*/}
