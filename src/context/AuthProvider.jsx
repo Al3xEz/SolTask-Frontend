@@ -9,12 +9,14 @@ export const AuthProvider = ({ children }) => {
   //States
   const [auth, setAuth] = useState({});
   const [loading, setLoading] = useState(true);
+  const [jswToken, setJswToken] = useState(null);
 
   //Navigate
   const navigate = useNavigate();
 
   //UseEffect(always trigger)
   useEffect(() => {
+    console.log("AUTH PROVIDER");
     const authenticateUser = async () => {
       const JWT = localStorage.getItem("JWT");
 
@@ -23,6 +25,8 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
         return;
       }
+
+      setJswToken(JWT);
 
       //The authorization with the JWT
       const config = {
@@ -47,7 +51,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth, loading }}>
+    <AuthContext.Provider
+      value={{ auth, setAuth, loading, setJswToken, jswToken }}
+    >
       {children}
     </AuthContext.Provider>
   );

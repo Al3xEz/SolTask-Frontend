@@ -13,7 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState({});
 
-  const { setAuth } = useAuth();
+  const { setAuth, setJswToken } = useAuth();
   const navigate = useNavigate();
 
   //----------Handle Submit----------
@@ -32,6 +32,7 @@ const Login = () => {
       setAlert({});
       localStorage.setItem("JWT", data.JWT);
       setAuth(data);
+      setJswToken(data.JWT);
       navigate("/projects");
     } catch (error) {
       setAlert({ message: error.response.data.message, error: true });
