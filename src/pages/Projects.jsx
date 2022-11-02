@@ -8,7 +8,7 @@ const Projects = () => {
     ------------------------------ Component -----------------------------
     ----------------------------------------------------------------------*/
   return loading2 ? (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center">
       <div className="sk-folding-cube">
         <div className="sk-cube1 sk-cube"></div>
         <div className="sk-cube2 sk-cube"></div>
