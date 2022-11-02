@@ -129,7 +129,7 @@ const Register = () => {
 
             <Link
               to="/"
-              className="text-center my-5 font-semibold hover:underline text-purple-600"
+              className="text-center my-5 font-semibold hover:underline text-sky-600"
             >
               Log in
             </Link>

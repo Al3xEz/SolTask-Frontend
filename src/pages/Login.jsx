@@ -86,7 +86,7 @@ const Login = () => {
 
             <Link
               to="/register"
-              className="text-center my-5 text-fuchsia-600 font-semibold hover:underline"
+              className="text-center my-5 text-sky-600 font-semibold hover:underline"
             >
               Sign up
             </Link>
@@ -94,7 +94,7 @@ const Login = () => {
 
           <Link
             to="/forgot-password"
-            className="block text-center my-5 text-slate-500 font-medium hover:underline hover:text-pink-600"
+            className="block text-center my-5 text-slate-500 font-medium hover:underline hover:text-sky-600"
           >
             Forgot password?
           </Link>

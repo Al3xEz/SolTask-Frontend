@@ -1,5 +1,7 @@
 import { Outlet, Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
 
 const ProtectedRoute = () => {
   const { auth, loading } = useAuth();
@@ -20,7 +22,21 @@ const ProtectedRoute = () => {
   //When JWT is loaded
   return (
     <>
-      <div>{auth._id ? <Outlet /> : <Navigate to="/" />}</div>
+      <div>
+        {auth._id ? (
+          <div>
+            <Header />
+            <div className="md:flex md:min-h-screen">
+              <Sidebar />
+              <main className="flex-1 p-10">
+                <Outlet />
+              </main>
+            </div>
+          </div>
+        ) : (
+          <Navigate to="/" />
+        )}
+      </div>
     </>
   );
 };

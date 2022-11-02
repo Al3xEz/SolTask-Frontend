@@ -39,7 +39,7 @@ const ConfirmAccount = () => {
           <Link
             to="/"
             className="my-5 font-bold text-xl hover:underline hover:bg-clip-text hover:text-transparent 
-              hover:bg-gradient-to-r hover:from-indigo-500 hover:via-fuchsia-500 hover:to-pink-600"
+              hover:bg-sky-600"
           >
             Log in
           </Link>

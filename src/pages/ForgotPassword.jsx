@@ -72,7 +72,7 @@ const ForgotPassword = () => {
 
             <Link
               to="/"
-              className="text-center font-semibold hover:underline text-purple-600 inline-block"
+              className="text-center font-semibold hover:underline text-sky-600 inline-block"
             >
               Log in
             </Link>
@@ -82,7 +82,7 @@ const ForgotPassword = () => {
 
             <Link
               to="/register"
-              className="text-center text-fuchsia-600 font-semibold hover:underline inline-block"
+              className="text-center text-sky-600 font-semibold hover:underline inline-block"
             >
               Sign up
             </Link>
