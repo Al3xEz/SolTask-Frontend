@@ -28,10 +28,11 @@ const ProjectForm = () => {
     }
     await projectSubmit({ name, description, deliveryData, client });
     setAlert({ message: "Project created successfully", error: false });
+
     setTimeout(() => {
       setAlert({});
-      navigate("/projects");
     }, 3000);
+
     setName("");
     setDescription("");
     setDeliveryDate("");
