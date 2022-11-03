@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import FormInput from "../components/FormInput";
 import SubmitButton from "../components/SubmitButton";

@@ -1,20 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FormInput from "./FormInput";
 import SubmitButton from "./SubmitButton";
 import Alert from "./Alert";
 import useProject from "../hooks/useProject";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ProjectForm = () => {
   //----------States----------
+  const [id, setId] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [deliveryData, setDeliveryDate] = useState("");
   const [client, setClient] = useState("");
   const [alert, setAlert] = useState({});
+  const { projectSubmit, project } = useProject();
 
+  const params = useParams();
   const navigate = useNavigate();
-  const { projectSubmit } = useProject();
+
+  useEffect(() => {
+    if (params.id) {
+      setId(project._id);
+      setName(project.name);
+      setDescription(project.description);
+      setDeliveryDate(project.deliveryDate.split("T")[0]);
+      setClient(project.client);
+    } else {
+    }
+  }, [params]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,11 +39,16 @@ const ProjectForm = () => {
       });
       return;
     }
-    await projectSubmit({ name, description, deliveryData, client });
-    setAlert({ message: "Project created successfully", error: false });
+    await projectSubmit({ id, name, description, deliveryData, client });
+    if (id) {
+      setAlert({ message: "Project updated", error: false });
+    } else {
+      setAlert({ message: "Project created successfully", error: false });
+    }
 
     setTimeout(() => {
       setAlert({});
+      navigate("/projects");
     }, 3000);
 
     setName("");
@@ -97,7 +115,7 @@ const ProjectForm = () => {
           setState={setClient}
         />
 
-        <SubmitButton value={"Create Project"} />
+        <SubmitButton value={id ? "Edit Project" : "Create Project"} />
       </form>
     </div>
   );

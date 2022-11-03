@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }) => {
 
   //UseEffect(always trigger)
   useEffect(() => {
-    console.log("AUTH PROVIDER");
     const authenticateUser = async () => {
       const JWT = localStorage.getItem("JWT");
 
