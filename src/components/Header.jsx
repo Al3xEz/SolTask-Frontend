@@ -5,9 +5,9 @@ const Header = () => {
     <header className="px-4 py-5 bg-white border-b shadow">
       <div className="md:flex md:justify-between items-center">
         <div className="flex gap-5 items-center">
-          <h2 className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-green-500 via-green-600 to-green-700">
+          <h2 className="text-5xl font-black">
             SolTask
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-500 via-sky-600 to-sky-700">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-500 via-green-600 to-green-700">
               !
             </span>
           </h2>
