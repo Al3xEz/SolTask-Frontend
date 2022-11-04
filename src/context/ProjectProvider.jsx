@@ -160,6 +160,7 @@ export const ProjectProvider = ({ children }) => {
         setLoading2,
         deleteProject,
         alert,
+        setProject,
       }}
     >
       {children}

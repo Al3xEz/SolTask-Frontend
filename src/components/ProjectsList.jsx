@@ -5,12 +5,9 @@ const ProjectsList = ({ project }) => {
 
   return (
     <div className="border-b p-5 flex">
-      <p className="flex-1 text-lg font-semibold">
+      <p className="flex-1 text-xl font-semibold">
         {name}{" "}
-        <span className="text-sm text-gray-500 uppercase font-semibold">
-          {" "}
-          {client}
-        </span>
+        <span className="text-sm text-gray-500 uppercase"> {client}</span>
       </p>
 
       <Link

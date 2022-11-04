@@ -10,7 +10,7 @@ const ProjectForm = () => {
   const [id, setId] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [deliveryData, setDeliveryDate] = useState("");
+  const [deliveryDate, setDeliveryDate] = useState("");
   const [client, setClient] = useState("");
   const [alert, setAlert] = useState({});
   const { projectSubmit, project } = useProject();
@@ -26,20 +26,25 @@ const ProjectForm = () => {
       setDeliveryDate(project.deliveryDate.split("T")[0]);
       setClient(project.client);
     } else {
+      setId("");
+      setName("");
+      setDescription("");
+      setDeliveryDate("");
+      setClient("");
     }
   }, [params]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if ([name, description, deliveryData, client].includes("")) {
+    if ([name, description, deliveryDate, client].includes("")) {
       setAlert({
         message: "All fields are required",
         error: true,
       });
       return;
     }
-    await projectSubmit({ id, name, description, deliveryData, client });
+    await projectSubmit({ id, name, description, deliveryDate, client });
     if (id) {
       setAlert({ message: "Project updated", error: false });
     } else {
@@ -100,7 +105,7 @@ const ProjectForm = () => {
           id="delivery-date"
           type="date"
           placeholder="Delivery Date"
-          state={deliveryData}
+          state={deliveryDate}
           setState={setDeliveryDate}
         />
 
