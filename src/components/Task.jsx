@@ -1,6 +1,12 @@
 import { formatearFecha } from "../helpers";
 
-const Task = ({ task, setModal, setTaskT }) => {
+const Task = ({
+  task,
+  setModal,
+  setTaskT,
+  setDeleteTaskModal,
+  handleDeleteTask,
+}) => {
   const { description, name, priority, deliveryDate, state, _id } = task;
 
   const handleEditTask = () => {
@@ -34,8 +40,13 @@ const Task = ({ task, setModal, setTaskT }) => {
             </button>
           )}
 
-          <button className="bg-red-600 hover:bg-red-700 transition-colors text-white px-4 py-3 uppercase font-bold text-sm rounded-lg">
-            delete
+          <button
+            onClick={() => {
+              handleDeleteTask(task);
+            }}
+            className="bg-red-600 hover:bg-red-700 transition-colors text-white px-4 py-3 uppercase font-bold text-sm rounded-lg"
+          >
+            Delete
           </button>
         </div>
       </div>

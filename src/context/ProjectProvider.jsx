@@ -149,6 +149,35 @@ export const ProjectProvider = ({ children }) => {
     }
   };
 
+  const deleteTask = async (task) => {
+    try {
+      const JWT = localStorage.getItem("JWT");
+      if (!JWT) {
+        return;
+      }
+
+      //The authorization with the JWT
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JWT}`,
+        },
+      };
+
+      await axiosClient.delete(`/tasks/${task._id}`, config);
+
+      const updatedProject = { ...project };
+
+      updatedProject.tasks = updatedProject.tasks.filter(
+        (item) => item._id !== task._id
+      );
+
+      setProject(updatedProject);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <ProjectContext.Provider
       value={{
@@ -161,6 +190,7 @@ export const ProjectProvider = ({ children }) => {
         deleteProject,
         alert,
         setProject,
+        deleteTask,
       }}
     >
       {children}

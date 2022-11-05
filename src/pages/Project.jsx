@@ -3,12 +3,14 @@ import { useParams, Link } from "react-router-dom";
 import useProject from "../hooks/useProject";
 import ModalTaskForm from "../components/ModalTaskForm";
 import Task from "../components/Task";
+import DeleteTaskModal from "../components/DeleteTaskModal";
 
 const Project = () => {
   const params = useParams();
   const { getProject, project, loading2, setLoading2 } = useProject();
   const [modal, setModal] = useState(false);
   const [taskT, setTaskT] = useState({});
+  const [deleteTaskModal, setDeleteTaskModal] = useState(false);
 
   useEffect(() => {
     setLoading2(true);
@@ -16,6 +18,11 @@ const Project = () => {
   }, []);
 
   const { name } = project;
+
+  const handleDeleteTask = (task) => {
+    setTaskT(task);
+    setDeleteTaskModal(!deleteTaskModal);
+  };
 
   return loading2 ? (
     <div className="flex justify-center items-center">
@@ -87,6 +94,7 @@ const Project = () => {
               task={item}
               setModal={setModal}
               setTaskT={setTaskT}
+              handleDeleteTask={handleDeleteTask}
             />
           ))
         ) : (
@@ -101,6 +109,13 @@ const Project = () => {
         setModal={setModal}
         taskT={taskT}
         setTaskT={setTaskT}
+        setDeleteTaskModal={setDeleteTaskModal}
+      />
+
+      <DeleteTaskModal
+        handleDeleteTask={handleDeleteTask}
+        deleteTaskModal={deleteTaskModal}
+        taskT={taskT}
       />
     </>
   );

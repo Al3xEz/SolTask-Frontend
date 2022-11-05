@@ -8,9 +8,8 @@ export const generarId = () => {
 };
 
 export const formatearFecha = (fecha) => {
-  console.log(fecha);
   const fechaNueva = new Date(fecha);
-  console.log(fechaNueva);
+
   const opciones = {
     weekday: "long",
     year: "numeric",
