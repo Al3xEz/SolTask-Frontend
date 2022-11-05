@@ -13,6 +13,7 @@ export const ProjectProvider = ({ children }) => {
   const { jswToken } = useAuth();
   const [alert, setAlert] = useState({});
   const navigate = useNavigate();
+  const [collaborator, setCollaborator] = useState({});
 
   const projectSubmit = async (project) => {
     if (project.id) {
@@ -64,7 +65,7 @@ export const ProjectProvider = ({ children }) => {
         const { data } = await axiosClient.post("/projects", project, config);
         setProjects([...projects, data]);
       } catch (error) {
-        console.log(error);
+        setAlert({ message: error.response.data.message, error: true });
       }
     }
   };
@@ -89,7 +90,7 @@ export const ProjectProvider = ({ children }) => {
         const { data } = await axiosClient("/projects", config);
         setProjects(data);
       } catch (error) {
-        console.log(error);
+        setAlert({ message: error.response.data.message, error: true });
       }
       setLoading2(false);
     };
@@ -115,7 +116,7 @@ export const ProjectProvider = ({ children }) => {
       const { data } = await axiosClient(`/projects/${id}`, config);
       setProject(data.project);
     } catch (error) {
-      console.log(error);
+      setAlert({ message: error.response.data.message, error: true });
     }
     setLoading2(false);
   };
@@ -145,7 +146,7 @@ export const ProjectProvider = ({ children }) => {
         navigate("/projects");
       }, 3000);
     } catch (error) {
-      console.log(error);
+      setAlert({ message: error.response.data.message, error: true });
     }
   };
 
@@ -174,7 +175,62 @@ export const ProjectProvider = ({ children }) => {
 
       setProject(updatedProject);
     } catch (error) {
-      console.log(error);
+      setAlert({ message: error.response.data.message, error: true });
+    }
+  };
+
+  const collaboratorsSubmit = async (email) => {
+    try {
+      const JWT = localStorage.getItem("JWT");
+      if (!JWT) {
+        return;
+      }
+
+      //The authorization with the JWT
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JWT}`,
+        },
+      };
+
+      const { data } = await axiosClient.post(
+        "/projects/collaborators",
+        { email },
+        config
+      );
+
+      setCollaborator(data);
+      setAlert({});
+    } catch (error) {
+      setAlert({ message: error.response.data.message, error: true });
+    }
+  };
+
+  const addCollaborator = async (email) => {
+    try {
+      const JWT = localStorage.getItem("JWT");
+      if (!JWT) {
+        return;
+      }
+
+      //The authorization with the JWT
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JWT}`,
+        },
+      };
+
+      const { data } = await axiosClient.post(
+        `/projects/collaborators/${project._id}`,
+        email,
+        config
+      );
+      setAlert({ message: data.message, error: false });
+      setCollaborator({});
+    } catch (error) {
+      setAlert({ message: error.response.data.message, error: true });
     }
   };
 
@@ -191,6 +247,11 @@ export const ProjectProvider = ({ children }) => {
         alert,
         setProject,
         deleteTask,
+        collaboratorsSubmit,
+        collaborator,
+        addCollaborator,
+        setCollaborator,
+        setAlert,
       }}
     >
       {children}

@@ -23,7 +23,7 @@ const Task = ({
           <p className="mb-1">{formatearFecha(deliveryDate)}</p>
           <p className="text-gray-600">Priority: {priority}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col md:flex-row gap-2">
           <button
             onClick={handleEditTask}
             className="bg-sky-600 hover:bg-sky-700 transition-colors text-white px-4 py-3 uppercase font-bold text-sm rounded-lg"
