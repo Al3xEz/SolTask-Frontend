@@ -14,6 +14,7 @@ export const ProjectProvider = ({ children }) => {
   const [alert, setAlert] = useState({});
   const navigate = useNavigate();
   const [collaborator, setCollaborator] = useState({});
+  const [deleteCollaboratorModal, setDeleteCollaboratorModal] = useState(false);
 
   const projectSubmit = async (project) => {
     if (project.id) {
@@ -234,6 +235,78 @@ export const ProjectProvider = ({ children }) => {
     }
   };
 
+  const handleDeleteCollaboratorModal = (coll) => {
+    setDeleteCollaboratorModal(!deleteCollaboratorModal);
+
+    setCollaborator(coll);
+  };
+
+  const deleteCollaborator = async () => {
+    try {
+      const JWT = localStorage.getItem("JWT");
+      if (!JWT) {
+        return;
+      }
+
+      //The authorization with the JWT
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JWT}`,
+        },
+      };
+
+      const { data } = await axiosClient.post(
+        `/projects/delete-collaborator/${project._id}`,
+        { id: collaborator._id },
+        config
+      );
+
+      const updatedProject = { ...project };
+
+      updatedProject.collaborators = updatedProject.collaborators.filter(
+        (item) => item._id !== collaborator._id
+      );
+
+      setProject(updatedProject);
+      setAlert({ message: data.message, error: false });
+      setCollaborator({});
+      setDeleteCollaboratorModal(false);
+    } catch (error) {
+      setAlert({ message: error.response.data.message, error: true });
+    }
+  };
+
+  const completeTask = async (id) => {
+    try {
+      const JWT = localStorage.getItem("JWT");
+      if (!JWT) {
+        return;
+      }
+
+      //The authorization with the JWT
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JWT}`,
+        },
+      };
+
+      const { data } = await axiosClient.post(`/tasks/state/${id}`, {}, config);
+
+      const updatedProject = { ...project };
+
+      updatedProject.tasks = updatedProject.tasks.map((item) =>
+        item._id === data._id ? data : item
+      );
+
+      setProject(updatedProject);
+      setAlert({});
+    } catch (error) {
+      setAlert({ message: error.response.data.message, error: true });
+    }
+  };
+
   return (
     <ProjectContext.Provider
       value={{
@@ -252,6 +325,10 @@ export const ProjectProvider = ({ children }) => {
         addCollaborator,
         setCollaborator,
         setAlert,
+        handleDeleteCollaboratorModal,
+        deleteCollaboratorModal,
+        deleteCollaborator,
+        completeTask,
       }}
     >
       {children}

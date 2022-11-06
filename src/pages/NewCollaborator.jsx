@@ -38,7 +38,7 @@ const NewCollaborator = () => {
         <div className="flex justify-center mt-10">
           <div className="bg-white py-10 px-5 md:w-1/2 rounded-lg shadow">
             <h2 className="text-center mb-10 text-2xl font-bold">Result</h2>
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col gap-4 justify-between items-center">
               <p>{collaborator.name}</p>
               <button
                 type="button"

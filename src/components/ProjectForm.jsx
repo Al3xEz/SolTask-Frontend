@@ -63,7 +63,7 @@ const ProjectForm = () => {
   };
 
   return (
-    <div className="md:w-1/2">
+    <div className="w-full lg:3/5 xl:w-1/2">
       {/*----------Alert----------*/}
       {Object.keys(alert).length > 0 && <Alert alert={alert} />}
 

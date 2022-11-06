@@ -4,7 +4,7 @@ const Header = () => {
   return (
     <header className="px-4 py-5 bg-white border-b shadow">
       <div className="md:flex md:justify-between items-center">
-        <div className="flex gap-5 items-center">
+        <div className="flex flex-col md:flex-row gap-5 items-center mb-4">
           <h2 className="text-5xl font-black">
             SolTask
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-500 via-green-600 to-green-700">
@@ -12,14 +12,10 @@ const Header = () => {
             </span>
           </h2>
 
-          <input
-            type="search"
-            placeholder="Search Project"
-            className=" rounded-full lg:w-96 block p-2 border-2 shadow-inner"
-          />
+         
         </div>
 
-        <div className="flex items-center gap-12">
+        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-12">
           <Link
             to="/projects"
             className="font-bold uppercase hover:text-sky-600"
