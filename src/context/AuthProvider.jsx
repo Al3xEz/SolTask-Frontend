@@ -49,9 +49,13 @@ export const AuthProvider = ({ children }) => {
     authenticateUser();
   }, []);
 
+  const logoutAuth = () => {
+    setAuth({});
+  };
+
   return (
     <AuthContext.Provider
-      value={{ auth, setAuth, loading, setJswToken, jswToken }}
+      value={{ auth, setAuth, loading, setJswToken, jswToken, logoutAuth }}
     >
       {children}
     </AuthContext.Provider>

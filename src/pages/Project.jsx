@@ -8,11 +8,24 @@ import DeleteTaskModal from "../components/DeleteTaskModal";
 import Collaborator from "../components/Collaborator";
 import DeleteCollaboratorModal from "../components/DeleteCollaboratorModal";
 import Alert from "../components/Alert";
+import io from "socket.io-client";
+
+let socket;
 
 const Project = () => {
   const params = useParams();
-  const { getProject, project, loading2, setLoading2, alert, setAlert } =
-    useProject();
+  const {
+    getProject,
+    project,
+    loading2,
+    setLoading2,
+    alert,
+    setAlert,
+    submitTasks,
+    deleteTaskReal,
+    updateTask,
+    completeTaskReal,
+  } = useProject();
   const [modal, setModal] = useState(false);
   const [taskT, setTaskT] = useState({});
   const [deleteTaskModal, setDeleteTaskModal] = useState(false);
@@ -24,7 +37,38 @@ const Project = () => {
     setLoading2(true);
     getProject(params.id);
   }, []);
-  
+
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+    socket.emit("open project", params.id);
+  }, []);
+
+  useEffect(() => {
+    socket.on("added task", (newTask) => {
+      if (newTask.project === project._id) {
+        submitTasks(newTask);
+      }
+    });
+
+    socket.on("deleted task", (task) => {
+      if (task.project === project._id) {
+        deleteTaskReal(task);
+      }
+    });
+
+    socket.on("updated task", (task) => {
+      if (task.project._id === project._id) {
+        updateTask(task);
+      }
+    });
+
+    socket.on("new state", (task) => {
+      if (task.project._id === project._id) {
+        completeTaskReal(task);
+      }
+    });
+  });
+
   const { name } = project;
 
   const handleDeleteTask = (task) => {
@@ -148,7 +192,6 @@ const Project = () => {
         modal={modal}
         setModal={setModal}
         taskT={taskT}
-        setTaskT={setTaskT}
         setDeleteTaskModal={setDeleteTaskModal}
       />
       <DeleteTaskModal

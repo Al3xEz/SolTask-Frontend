@@ -6,8 +6,11 @@ import Alert from "./Alert";
 import { useParams } from "react-router-dom";
 import axiosClient from "../config/axiosClient";
 import useProject from "../hooks/useProject";
+import io from "socket.io-client";
 
-const ModalTaskForm = ({ modal, setModal, taskT, setTaskT }) => {
+let socket;
+
+const ModalTaskForm = ({ modal, setModal, taskT }) => {
   const params = useParams();
 
   const [id, setId] = useState("");
@@ -36,7 +39,12 @@ const ModalTaskForm = ({ modal, setModal, taskT, setTaskT }) => {
     setPriority("");
   }, [taskT]);
 
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+  }, []);
+
   const taskSubmit = async (task) => {
+    //Editing
     if (task?.id) {
       try {
         const JWT = localStorage.getItem("JWT");
@@ -58,12 +66,6 @@ const ModalTaskForm = ({ modal, setModal, taskT, setTaskT }) => {
           config
         );
 
-        const updatedProject = { ...project };
-        updatedProject.tasks = updatedProject.tasks.map((item) =>
-          item._id === data._id ? data : item
-        );
-        setProject(updatedProject);
-
         setAlert({});
         setModal(false);
         setId("");
@@ -71,10 +73,13 @@ const ModalTaskForm = ({ modal, setModal, taskT, setTaskT }) => {
         setDescription("");
         setDeliveryDate("");
         setPriority("");
+
+        socket.emit("update task", data);
       } catch (error) {
         console.log(error);
       }
     } else {
+      //Creating
       try {
         const JWT = localStorage.getItem("JWT");
         if (!JWT) {
@@ -91,9 +96,6 @@ const ModalTaskForm = ({ modal, setModal, taskT, setTaskT }) => {
 
         const { data } = await axiosClient.post("/tasks", task, config);
 
-        const updatedProject = { ...project };
-        updatedProject.tasks = [...project.tasks, data];
-        setProject(updatedProject);
         setAlert({});
         setModal(false);
         setId("");
@@ -101,6 +103,8 @@ const ModalTaskForm = ({ modal, setModal, taskT, setTaskT }) => {
         setDescription("");
         setDeliveryDate("");
         setPriority("");
+
+        socket.emit("new task", data);
       } catch (error) {
         console.log(error);
       }

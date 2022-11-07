@@ -2,6 +2,9 @@ import { useState, useEffect, createContext } from "react";
 import useAuth from "../hooks/useAuth";
 import axiosClient from "../config/axiosClient";
 import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
+
+let socket;
 
 //Create context
 const ProjectContext = createContext();
@@ -15,6 +18,37 @@ export const ProjectProvider = ({ children }) => {
   const navigate = useNavigate();
   const [collaborator, setCollaborator] = useState({});
   const [deleteCollaboratorModal, setDeleteCollaboratorModal] = useState(false);
+
+  useEffect(() => {
+    const getProjects = async () => {
+      setLoading2(true);
+      try {
+        const JWT = localStorage.getItem("JWT");
+        if (!JWT) {
+          return;
+        }
+
+        //The authorization with the JWT
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JWT}`,
+          },
+        };
+
+        const { data } = await axiosClient("/projects", config);
+        setProjects(data);
+      } catch (error) {
+        setAlert({ message: error.response.data.message, error: true });
+      }
+      setLoading2(false);
+    };
+    getProjects();
+  }, [jswToken]);
+
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+  }, []);
 
   const projectSubmit = async (project) => {
     if (project.id) {
@@ -70,33 +104,6 @@ export const ProjectProvider = ({ children }) => {
       }
     }
   };
-
-  useEffect(() => {
-    const getProjects = async () => {
-      setLoading2(true);
-      try {
-        const JWT = localStorage.getItem("JWT");
-        if (!JWT) {
-          return;
-        }
-
-        //The authorization with the JWT
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${JWT}`,
-          },
-        };
-
-        const { data } = await axiosClient("/projects", config);
-        setProjects(data);
-      } catch (error) {
-        setAlert({ message: error.response.data.message, error: true });
-      }
-      setLoading2(false);
-    };
-    getProjects();
-  }, [jswToken]);
 
   const getProject = async (id) => {
     try {
@@ -168,13 +175,8 @@ export const ProjectProvider = ({ children }) => {
 
       await axiosClient.delete(`/tasks/${task._id}`, config);
 
-      const updatedProject = { ...project };
-
-      updatedProject.tasks = updatedProject.tasks.filter(
-        (item) => item._id !== task._id
-      );
-
-      setProject(updatedProject);
+      //socket-----------------------------
+      socket.emit("delete task", task);
     } catch (error) {
       setAlert({ message: error.response.data.message, error: true });
     }
@@ -263,12 +265,11 @@ export const ProjectProvider = ({ children }) => {
       );
 
       const updatedProject = { ...project };
-
       updatedProject.collaborators = updatedProject.collaborators.filter(
         (item) => item._id !== collaborator._id
       );
-
       setProject(updatedProject);
+
       setAlert({ message: data.message, error: false });
       setCollaborator({});
       setDeleteCollaboratorModal(false);
@@ -294,17 +295,48 @@ export const ProjectProvider = ({ children }) => {
 
       const { data } = await axiosClient.post(`/tasks/state/${id}`, {}, config);
 
-      const updatedProject = { ...project };
-
-      updatedProject.tasks = updatedProject.tasks.map((item) =>
-        item._id === data._id ? data : item
-      );
-
-      setProject(updatedProject);
       setAlert({});
+
+      socket.emit("change state", data);
     } catch (error) {
       setAlert({ message: error.response.data.message, error: true });
     }
+  };
+
+  const submitTasks = (newTask) => {
+    const updatedProject = { ...project };
+    updatedProject.tasks = [...project.tasks, newTask];
+    setProject(updatedProject);
+  };
+
+  const deleteTaskReal = (task) => {
+    const updatedProject = { ...project };
+    updatedProject.tasks = updatedProject.tasks.filter(
+      (item) => item._id !== task._id
+    );
+    setProject(updatedProject);
+  };
+
+  const updateTask = (task) => {
+    const updatedProject = { ...project };
+    updatedProject.tasks = updatedProject.tasks.map((item) =>
+      item._id === task._id ? task : item
+    );
+    setProject(updatedProject);
+  };
+
+  const completeTaskReal = (task) => {
+    const updatedProject = { ...project };
+    updatedProject.tasks = updatedProject.tasks.map((item) =>
+      item._id === task._id ? task : item
+    );
+    setProject(updatedProject);
+  };
+
+  const logout = () => {
+    setProject({});
+    setProjects([]);
+    setAlert({});
   };
 
   return (
@@ -329,6 +361,11 @@ export const ProjectProvider = ({ children }) => {
         deleteCollaboratorModal,
         deleteCollaborator,
         completeTask,
+        submitTasks,
+        deleteTaskReal,
+        updateTask,
+        completeTaskReal,
+        logout,
       }}
     >
       {children}
